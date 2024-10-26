@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Speech Recognition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        #textbox {
+            width: 300px;
+            height: 50px;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Real-Time Speech Recognition</h1>
+<div id="result"></div>
+<input type="text" id="textbox" placeholder="Recognized text will appear here..." readonly="">
+
+<script>
+    const resultDiv = document.getElementById('result');
+    const textbox = document.getElementById('textbox');
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true; // Enable continuous mode
+    recognition.interimResults = false; // Get only final results
+
+    recognition.onstart = function() {
+        console.log("Speech recognition started.");
+    };
+
+    recognition.onend = function() {
+        console.log("Speech recognition ended. Restarting...");
+        recognition.start(); // Automatically restart recognition when it ends
+    };
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[event.resultIndex][0].transcript;
+        textbox.value = transcript; // Update the textbox with the latest transcript
+        console.log(transcript);  // Log to console for further use
+    };
+
+    // Start recognition on page load
+    recognition.start();
+</script>
+
+
+
+</body></html>
